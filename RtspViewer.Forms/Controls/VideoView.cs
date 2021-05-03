@@ -140,7 +140,6 @@ namespace RtspViewer.Forms.Controls
 
         private void AudioSource_FrameReceived(object sender, IDecodedAudioFrame frame)
         {
-            // TODO: continue development of audio playback
             if (_player == null)
             {
                 _player = new BufferedWaveProvider(
