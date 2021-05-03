@@ -23,6 +23,11 @@ namespace RtspViewer.Forms.Windows
                 txtAddress.Text = config.Address;
                 txtUsername.Text = config.Username;
                 txtPassword.Text = config.Password;
+                cbxProtocol.SelectedItem = config.Protocol.ToString();
+            }
+            else
+            {
+                cbxProtocol.SelectedItem = "TCP";
             }
         }
 
@@ -52,7 +57,8 @@ namespace RtspViewer.Forms.Windows
             {
                 Address = streamAddress,
                 Username = txtUsername.Text,
-                Password = txtPassword.Text
+                Password = txtPassword.Text,
+                Protocol = (ConnectionType) cbxProtocol.SelectedIndex
             });
 
             Close();

@@ -28,7 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbxProtocol = new System.Windows.Forms.ComboBox();
+            this.streamConfigurationBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.lblProtocol = new System.Windows.Forms.Label();
             this.lblError = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -39,10 +43,13 @@
             this.lblUsernane = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.streamConfigurationBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.cbxProtocol);
+            this.panel1.Controls.Add(this.lblProtocol);
             this.panel1.Controls.Add(this.lblError);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnSave);
@@ -54,14 +61,40 @@
             this.panel1.Controls.Add(this.lblAddress);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(509, 108);
+            this.panel1.Size = new System.Drawing.Size(509, 137);
             this.panel1.TabIndex = 0;
+            // 
+            // cbxProtocol
+            // 
+            this.cbxProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxProtocol.FormattingEnabled = true;
+            this.cbxProtocol.Items.AddRange(new object[] {
+            "TCP",
+            "UDP"});
+            this.cbxProtocol.Location = new System.Drawing.Point(69, 11);
+            this.cbxProtocol.MaxDropDownItems = 2;
+            this.cbxProtocol.Name = "cbxProtocol";
+            this.cbxProtocol.Size = new System.Drawing.Size(71, 21);
+            this.cbxProtocol.TabIndex = 10;
+            // 
+            // streamConfigurationBindingSource
+            // 
+            this.streamConfigurationBindingSource.DataSource = typeof(RtspViewer.Configuration.StreamConfiguration);
+            // 
+            // lblProtocol
+            // 
+            this.lblProtocol.AutoSize = true;
+            this.lblProtocol.Location = new System.Drawing.Point(14, 14);
+            this.lblProtocol.Name = "lblProtocol";
+            this.lblProtocol.Size = new System.Drawing.Size(49, 13);
+            this.lblProtocol.TabIndex = 9;
+            this.lblProtocol.Text = "Protocol:";
             // 
             // lblError
             // 
             this.lblError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblError.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblError.Location = new System.Drawing.Point(89, 82);
+            this.lblError.Location = new System.Drawing.Point(89, 110);
             this.lblError.Name = "lblError";
             this.lblError.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblError.Size = new System.Drawing.Size(325, 23);
@@ -72,7 +105,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(8, 82);
+            this.btnCancel.Location = new System.Drawing.Point(8, 110);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 7;
@@ -82,7 +115,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(420, 82);
+            this.btnSave.Location = new System.Drawing.Point(420, 110);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 6;
@@ -110,10 +143,10 @@
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(69, 13);
+            this.txtAddress.Location = new System.Drawing.Point(200, 11);
             this.txtAddress.MaxLength = 1024;
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(426, 20);
+            this.txtAddress.Size = new System.Drawing.Size(295, 20);
             this.txtAddress.TabIndex = 3;
             // 
             // lblPassword
@@ -137,7 +170,7 @@
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
-            this.lblAddress.Location = new System.Drawing.Point(15, 16);
+            this.lblAddress.Location = new System.Drawing.Point(146, 14);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(48, 13);
             this.lblAddress.TabIndex = 0;
@@ -147,12 +180,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 131);
+            this.ClientSize = new System.Drawing.Size(537, 161);
             this.Controls.Add(this.panel1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(553, 170);
+            this.MaximumSize = new System.Drawing.Size(553, 200);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(553, 170);
+            this.MinimumSize = new System.Drawing.Size(553, 200);
             this.Name = "ConfigForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -162,6 +195,7 @@
             this.TopMost = true;
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.streamConfigurationBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -178,5 +212,8 @@
         private System.Windows.Forms.Label lblUsernane;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Label lblProtocol;
+        private System.Windows.Forms.ComboBox cbxProtocol;
+        private System.Windows.Forms.BindingSource streamConfigurationBindingSource;
     }
 }

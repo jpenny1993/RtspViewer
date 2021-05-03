@@ -28,7 +28,7 @@ namespace RtspViewer.RawFramesReceiving
                 ? new ConnectionParameters(uri)
                 : new ConnectionParameters(uri, new NetworkCredential(config.Username, config.Password));
 
-            _connectionParameters.RtpTransport = RtpTransportProtocol.TCP;
+            _connectionParameters.RtpTransport = (RtpTransportProtocol)((int)config.Protocol);
             _connectionParameters.CancelTimeout = TimeSpan.FromSeconds(1);
         }
 
