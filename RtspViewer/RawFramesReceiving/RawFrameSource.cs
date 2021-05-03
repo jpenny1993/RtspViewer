@@ -73,7 +73,7 @@ namespace RtspViewer.RawFramesReceiving
                         }
                         catch (RtspClientException e)
                         {
-                            OnStatusChanged(e.ToString());
+                            OnStatusChanged(e.Message);
                             await Task.Delay(RetryDelay, token);
                             continue;
                         }
@@ -86,7 +86,7 @@ namespace RtspViewer.RawFramesReceiving
                         }
                         catch (RtspClientException e)
                         {
-                            OnStatusChanged(e.ToString());
+                            OnStatusChanged(e.Message);
                             await Task.Delay(RetryDelay, token);
                         }
                     }
