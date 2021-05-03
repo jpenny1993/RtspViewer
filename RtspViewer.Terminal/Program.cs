@@ -3,9 +3,8 @@ using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Net;
-using RtspClientSharp;
 using RtspClientSharp.RawFrames;
+using RtspViewer.Configuration;
 using RtspViewer.RawFramesDecoding.DecodedFrames;
 using RtspViewer.RawFramesReceiving;
 
@@ -17,18 +16,14 @@ namespace RtspViewer.Terminal
 
         static void Main(string[] args)
         {
-            var address = ConfigurationManager.AppSettings["Address"];
-            var username = ConfigurationManager.AppSettings["Username"];
-            var password = ConfigurationManager.AppSettings["Password"];
-
-            var credential = new NetworkCredential(username, password);
-            var connectionParameters = new ConnectionParameters(new Uri(address), credential)
+            var config = new StreamConfiguration
             {
-                RtpTransport = RtpTransportProtocol.TCP,
-                CancelTimeout = TimeSpan.FromSeconds(1)
+                Address = ConfigurationManager.AppSettings["Address"],
+                Username = ConfigurationManager.AppSettings["Username"],
+                Password = ConfigurationManager.AppSettings["Password"]
             };
 
-            _rawFramesSource = new RawFramesSource(connectionParameters);
+            _rawFramesSource = new RawFramesSource(config);
             _rawFramesSource.ConnectionStatusChanged += OnConnectionStatusChanged;
             _rawFramesSource.FrameReceived += OnFrameReceived;
 

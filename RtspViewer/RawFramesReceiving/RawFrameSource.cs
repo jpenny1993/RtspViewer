@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Net;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using RtspClientSharp;
 using RtspClientSharp.RawFrames;
 using RtspClientSharp.Rtsp;
+using RtspViewer.Configuration;
 
 namespace RtspViewer.RawFramesReceiving
 {
@@ -18,10 +20,16 @@ namespace RtspViewer.RawFramesReceiving
         public EventHandler<RawFrame> FrameReceived { get; set; }
         public EventHandler<string> ConnectionStatusChanged { get; set; }
 
-        public RawFramesSource(ConnectionParameters connectionParameters)
+        public RawFramesSource(StreamConfiguration config)
         {
-            _connectionParameters =
-                connectionParameters ?? throw new ArgumentNullException(nameof(connectionParameters));
+            var uri = new Uri(config.Address);
+
+            _connectionParameters = !string.IsNullOrEmpty(uri.UserInfo)
+                ? new ConnectionParameters(uri)
+                : new ConnectionParameters(uri, new NetworkCredential(config.Username, config.Password));
+
+            _connectionParameters.RtpTransport = RtpTransportProtocol.TCP;
+            _connectionParameters.CancelTimeout = TimeSpan.FromSeconds(1);
         }
 
         public void Start()

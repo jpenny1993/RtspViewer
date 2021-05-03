@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using RtspViewer.Forms.Models;
+using RtspViewer.Configuration;
 
 namespace RtspViewer.Forms.Windows
 {

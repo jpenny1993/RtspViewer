@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Media;
-using System.Net;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using NAudio.Wave;
-using RtspClientSharp;
-using RtspViewer.Forms.Models;
+using RtspViewer.Configuration;
 using RtspViewer.RawFramesDecoding;
 using RtspViewer.RawFramesDecoding.DecodedFrames;
 using RtspViewer.RawFramesReceiving;
@@ -63,15 +57,7 @@ namespace RtspViewer.Forms.Controls
         {
             Stop();
 
-            var uri = new Uri(config.Address);
-            var connectionParameters = !string.IsNullOrEmpty(uri.UserInfo)
-                ? new ConnectionParameters(uri)
-                : new ConnectionParameters(uri, new NetworkCredential(config.Username, config.Password));
-
-            connectionParameters.RtpTransport = RtpTransportProtocol.TCP;
-            connectionParameters.CancelTimeout = TimeSpan.FromSeconds(1);
-
-            _rawFramesSource = new RawFramesSource(connectionParameters);
+            _rawFramesSource = new RawFramesSource(config);
             _audioSource = new RealtimeAudioSource(_rawFramesSource);
             _videoSource = new RealtimeVideoSource(_rawFramesSource);  
         }
