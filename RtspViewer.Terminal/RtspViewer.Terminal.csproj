@@ -45,6 +45,64 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <ffmpegx64 Include="..\ffmpeg\x64\avcodec-58.dll">
+      <Link>lib\x64\avcodec-58.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\avdevice-58.dll">
+      <Link>lib\x64\avdevice-58.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\avfilter-7.dll">
+      <Link>lib\x64\avfilter-7.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\avformat-58.dll">
+      <Link>lib\x64\avformat-58.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\avutil-56.dll">
+      <Link>lib\x64\avutil-56.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\libffmpeghelper.dll">
+      <Link>lib\x64\libffmpeghelper.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\postproc-55.dll">
+      <Link>lib\x64\postproc-55.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\swresample-3.dll">
+      <Link>lib\x64\swresample-3.dll</Link>
+    </ffmpegx64>
+    <ffmpegx64 Include="..\ffmpeg\x64\swscale-5.dll">
+      <Link>lib\x64\swscale-5.dll</Link>
+    </ffmpegx64>
+  </ItemGroup>
+  <ItemGroup>
+    <ffmpegx86 Include="..\ffmpeg\x86\avcodec-58.dll">
+      <Link>lib\x86\avcodec-58.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\avdevice-58.dll">
+      <Link>lib\x86\avdevice-58.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\avfilter-7.dll">
+      <Link>lib\x86\avfilter-7.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\avformat-58.dll">
+      <Link>lib\x86\avformat-58.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\avutil-56.dll">
+      <Link>lib\x86\avutil-56.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\libffmpeghelper.dll">
+      <Link>lib\x86\libffmpeghelper.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\postproc-55.dll">
+      <Link>lib\x86\postproc-55.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\swresample-3.dll">
+      <Link>lib\x86\swresample-3.dll</Link>
+    </ffmpegx86>
+    <ffmpegx86 Include="..\ffmpeg\x86\swscale-5.dll">
+      <Link>lib\x86\swscale-5.dll</Link>
+    </ffmpegx86>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,14 +111,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RtspViewer.ExternalLibraries\RtspViewer.ExternalLibraries.csproj">
-      <Project>{b7876de5-2161-4a27-896b-9b15a3586b6e}</Project>
-      <Name>RtspViewer.ExternalLibraries</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RtspViewer\RtspViewer.csproj">
       <Project>{2a309639-c02b-484b-bd5b-8e600fce9105}</Project>
       <Name>RtspViewer</Name>
     </ProjectReference>
   </ItemGroup>
+  <Target Name="CopyContent" AfterTargets="Build">
+    <Copy SourceFiles="@(ffmpegx86)" Condition="'$(Platform)' == 'AnyCPU'" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ffmpegx86)" Condition="'$(Platform)' == 'x86'" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ffmpegx64)" Condition="'$(Platform)' == 'x64'" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

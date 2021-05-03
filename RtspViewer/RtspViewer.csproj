@@ -81,11 +81,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RtspViewer.ExternalLibraries\RtspViewer.ExternalLibraries.csproj">
-      <Project>{b7876de5-2161-4a27-896b-9b15a3586b6e}</Project>
-      <Name>RtspViewer.ExternalLibraries</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
