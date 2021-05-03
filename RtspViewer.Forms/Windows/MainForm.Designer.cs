@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuBarTop = new System.Windows.Forms.MenuStrip();
             this.menuStripFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBtnPlay = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,7 +103,7 @@
             // statusLblConnection
             // 
             this.statusLblConnection.Name = "statusLblConnection";
-            this.statusLblConnection.Size = new System.Drawing.Size(200, 17);
+            this.statusLblConnection.Size = new System.Drawing.Size(210, 17);
             this.statusLblConnection.Spring = true;
             this.statusLblConnection.Text = "Disconnected";
             this.statusLblConnection.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -111,7 +112,7 @@
             // 
             this.statusLblTimer.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
             this.statusLblTimer.Name = "statusLblTimer";
-            this.statusLblTimer.Size = new System.Drawing.Size(198, 17);
+            this.statusLblTimer.Size = new System.Drawing.Size(208, 17);
             this.statusLblTimer.Spring = true;
             this.statusLblTimer.Text = "00:00:00";
             // 
@@ -120,7 +121,7 @@
             this.statusLblFps.Margin = new System.Windows.Forms.Padding(2, 3, 0, 2);
             this.statusLblFps.Name = "statusLblFps";
             this.statusLblFps.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.statusLblFps.Size = new System.Drawing.Size(198, 17);
+            this.statusLblFps.Size = new System.Drawing.Size(208, 17);
             this.statusLblFps.Spring = true;
             this.statusLblFps.Text = "0 fps";
             this.statusLblFps.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -168,6 +169,7 @@
             this.Controls.Add(this.tableLayoutPanel);
             this.Controls.Add(this.statusBar);
             this.Controls.Add(this.menuBarTop);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuBarTop;
             this.MinimumSize = new System.Drawing.Size(662, 455);
             this.Name = "MainForm";

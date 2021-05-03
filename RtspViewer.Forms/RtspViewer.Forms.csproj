@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon_black.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.7.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
@@ -194,7 +197,9 @@
       <Name>RtspViewer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="icon_black.ico" />
+  </ItemGroup>
   <Target Name="CopyContent" AfterTargets="Build">
     <Copy SourceFiles="@(ffmpegx86)" Condition="'$(Platform)' == 'AnyCPU'" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ffmpegx86)" Condition="'$(Platform)' == 'x86'" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
