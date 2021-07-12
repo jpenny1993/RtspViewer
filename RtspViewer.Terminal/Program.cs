@@ -49,7 +49,7 @@ namespace RtspViewer.Terminal
 
         private static void VideoSource_FrameReceived(object sender, IDecodedVideoFrame frame)
         {
-            Console.WriteLine("VideoFrameDecoded: {0:yyyy/MM/dd hh:mm:ss}", frame.Timestamp);
+            Console.WriteLine("VideoFrameDecoded: {0:yyyy/MM/dd hh:mm:ss}, {1}x{2}", frame.Timestamp, frame.Width, frame.Height);
 
             var bmp = new Bitmap(1280, 720);
             bmp.UpdateBitmap(frame);

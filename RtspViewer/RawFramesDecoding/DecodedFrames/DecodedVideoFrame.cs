@@ -8,8 +8,14 @@ namespace RtspViewer.RawFramesDecoding.DecodedFrames
 
         public DateTime Timestamp { get; }
 
-        public DecodedVideoFrame(DateTime timestamp, Action<IntPtr, int, TransformParameters> transformAction)
+        public int Width { get; }
+
+        public int Height { get; }
+
+        public DecodedVideoFrame(int width, int height, DateTime timestamp, Action<IntPtr, int, TransformParameters> transformAction)
         {
+            Width = width;
+            Height = height;
             Timestamp = timestamp;
             _transformAction = transformAction;
         }

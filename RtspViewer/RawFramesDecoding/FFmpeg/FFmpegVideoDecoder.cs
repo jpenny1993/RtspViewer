@@ -75,9 +75,12 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
                     }
                 }
 
-                resultCode = FFmpegVideoPInvoke.DecodeFrame(_decoderHandle, (IntPtr)rawBufferPtr,
+                resultCode = FFmpegVideoPInvoke.DecodeFrame(_decoderHandle,
+                    (IntPtr)rawBufferPtr,
                     rawVideoFrame.FrameSegment.Count,
-                    out int width, out int height, out FFmpegPixelFormat pixelFormat);
+                    out int width,
+                    out int height,
+                    out FFmpegPixelFormat pixelFormat);
 
                 if (resultCode != 0)
                     return null;
@@ -89,7 +92,7 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
                     DropAllVideoScalers();
                 }
 
-                return new DecodedVideoFrame(rawVideoFrame.Timestamp, TransformTo);
+                return new DecodedVideoFrame(width, height, rawVideoFrame.Timestamp, TransformTo);
             }
         }
 
