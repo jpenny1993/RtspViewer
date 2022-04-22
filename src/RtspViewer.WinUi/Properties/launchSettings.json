@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RtspViewer.WinUi (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "RtspViewer.WinUi (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

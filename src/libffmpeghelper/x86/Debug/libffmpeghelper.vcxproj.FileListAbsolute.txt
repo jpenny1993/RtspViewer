@@ -1,0 +1,2 @@
+C:\src\RtspClientSharpCore\RtspClientSharpCore\libffmpeghelper\x86\Debug\libffmpeghelper.dll
+C:\src\RtspViewer\src\libffmpeghelper\x86\Debug\libffmpeghelper.dll

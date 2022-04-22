@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="RtspClientSharp" Version="1.3.3" />
+		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RtspViewer\RtspViewer.csproj" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Platform)' == 'x86'">
+		<Exec Command="xcopy $(ProjectDir)\lib\x86\*.dll  $(TargetDir)  /Y /E /C /F&#xA;&#xD;&#xA;xcopy $(ProjectDir)\lib\x86\*.so  $(TargetDir)  /Y /E /C /F" />
+	</Target>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Platform)' == 'x64'">
+		<Exec Command="xcopy $(ProjectDir)\lib\x64\*.dll  $(TargetDir)  /Y /E /C /F&#xA;&#xD;&#xA;xcopy $(ProjectDir)\lib\x64\*.so  $(TargetDir)  /Y /E /C /F" />
+	</Target>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Platform)' == 'AnyCPU'">
+		<Exec Command="xcopy $(ProjectDir)\lib\x64\*.dll  $(TargetDir)  /Y /E /C /F&#xA;&#xD;&#xA;xcopy $(ProjectDir)\lib\x64\*.so  $(TargetDir)  /Y /E /C /F" />
+	</Target>
+
+</Project>
