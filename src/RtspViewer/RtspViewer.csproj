@@ -57,18 +57,21 @@
   <ItemGroup>
     <Compile Include="Configuration\ConnectionType.cs" />
     <Compile Include="Configuration\StreamConfiguration.cs" />
-    <Compile Include="Extensions\BitmapExtensions.cs" />
     <Compile Include="Extensions\CryptographyExtensions.cs" />
+    <Compile Include="IFrameTransformer.cs" />
+    <Compile Include="IMediaSource.cs" />
     <Compile Include="MediaSource.cs" />
-    <Compile Include="VideoFrameDecoder.cs" />
+    <Compile Include="RawFramesDecoding\IAudioFrameDecoder.cs" />
+    <Compile Include="RawFramesDecoding\IVideoFrameDecoder.cs" />
+    <Compile Include="RawFramesDecoding\VideoFrameDecoder.cs" />
     <Compile Include="FrameTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawFramesDecoding\AudioConversionParameters.cs" />
     <Compile Include="RawFramesDecoding\DecodedFrames\AudioFrameFormat.cs" />
     <Compile Include="RawFramesDecoding\DecodedFrames\DecodedAudioFrame.cs" />
     <Compile Include="RawFramesDecoding\DecodedFrames\DecodedVideoFrame.cs" />
-    <Compile Include="RawFramesDecoding\DecodedFrames\IDecodedAudioFrame.cs" />
-    <Compile Include="RawFramesDecoding\DecodedFrames\IDecodedVideoFrame.cs" />
+    <Compile Include="IDecodedAudioFrame.cs" />
+    <Compile Include="IDecodedVideoFrame.cs" />
     <Compile Include="RawFramesDecoding\DecodedVideoFrameParameters.cs" />
     <Compile Include="RawFramesDecoding\DecoderException.cs" />
     <Compile Include="RawFramesDecoding\FFmpeg\FFmpegAudioCodecId.cs" />
@@ -86,7 +89,7 @@
     <Compile Include="RawFramesDecoding\TransformParameters.cs" />
     <Compile Include="RawFramesReceiving\IRawFramesSource.cs" />
     <Compile Include="RawFramesReceiving\RawFrameSource.cs" />
-    <Compile Include="AudioFrameDecoder.cs" />
+    <Compile Include="RawFramesDecoding\AudioFrameDecoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
