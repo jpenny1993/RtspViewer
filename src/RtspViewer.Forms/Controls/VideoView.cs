@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using NAudio.Wave;
@@ -13,7 +12,6 @@ namespace RtspViewer.Forms.Controls
         private readonly IMediaSource _mediaSource;
 
         private Dispatcher _dispatcher;
-        private Bitmap _bitmap;
         private DateTime _startTime;
         private BufferedWaveProvider _player;
         private WaveOut _waveOut;
@@ -113,32 +111,19 @@ namespace RtspViewer.Forms.Controls
 
         private void MediaSource_OnVideoFrameReceived(object sender, IDecodedVideoFrame videoFrame)
         {
-            FramesReceived++;
-            _bitmap = _frameTransformer.TransformToBitmap(videoFrame);
-            _dispatcher.Invoke(() => video.Image = _bitmap, DispatcherPriority.Send);
+            _dispatcher.Invoke(() =>
+            {
+                FramesReceived++;
+                video.Image = _frameTransformer.TransformToBitmap(videoFrame);
+            }, DispatcherPriority.Send);
         }
 
         private void ReinitializeBitmap(int width, int height)
         {
-            if (Started)
+            _dispatcher.Invoke(() =>
             {
-                // Allow the next frame to size correctly
-                _frameTransformer.UpdateFrameSize(Width, Height);
-            }
-            else if (_bitmap != null)
-            {
-                // Resize the current frame
-                _dispatcher.Invoke(() =>
-                {
-                    Bitmap resized = new Bitmap(width, height);
-                    using (Graphics g = Graphics.FromImage(resized))
-                    {
-                        g.DrawImage(_bitmap, 0, 0, width, height);
-                    }
-
-                    video.Image = resized;
-                }, DispatcherPriority.Send);
-            }
+                video.Image = _frameTransformer.UpdateFrameSize(width, height);
+            }, DispatcherPriority.Send);
         }
 
         private void Video_Click(object sender, EventArgs e)

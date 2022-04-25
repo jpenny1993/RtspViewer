@@ -6,8 +6,6 @@ namespace RtspViewer
     {
         Bitmap TransformToBitmap(IDecodedVideoFrame decodedFrame);
 
-        byte[] TransformToBytes(IDecodedVideoFrame decodedFrame);
-
-        void UpdateFrameSize(int width, int height);
+        Bitmap UpdateFrameSize(int width, int height);
     }
 }

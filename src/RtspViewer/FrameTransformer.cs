@@ -5,9 +5,14 @@ using RtspViewer.RawFramesDecoding;
 
 namespace RtspViewer
 {
-    public class FrameTransformer : IFrameTransformer
+    public sealed class FrameTransformer : IFrameTransformer
     {
-        private Size _pictureSize;
+        private TransformParameters _transformParameters;
+        private Rectangle _imageRectangle;
+        private Bitmap _bitmap;
+        private int _imageBufferSize;
+        private int _imageBufferStride;
+        private byte[] _imageBuffer;
 
         public FrameTransformer() : this(1280, 720)
         {
@@ -15,56 +20,61 @@ namespace RtspViewer
 
         public FrameTransformer(int pictureWidth, int pictureHeight)
         {
-            _pictureSize = new Size(pictureWidth, pictureHeight);
+            UpdateFrameSize(pictureWidth, pictureHeight);
         }
 
         public Bitmap TransformToBitmap(IDecodedVideoFrame decodedFrame)
         {
-            var managedArray = TransformFrame(decodedFrame, _pictureSize);
-            var im = CopyDataToBitmap(managedArray, _pictureSize);
-            return im;
+            TransformFrame(decodedFrame, _imageBuffer, _imageBufferSize, _imageBufferStride, _transformParameters);
+            CopyDataToBitmap(_imageBuffer, _bitmap, _imageRectangle);
+            return _bitmap;
         }
 
-        public byte[] TransformToBytes(IDecodedVideoFrame decodedFrame)
+        public Bitmap UpdateFrameSize(int width, int height)
         {
-            return TransformFrame(decodedFrame, _pictureSize);
+            _bitmap = _bitmap is null
+                ? new Bitmap(width, height, PixelFormat.Format32bppArgb)
+                : ResizeBitmap(_bitmap, width, height);
+
+            _transformParameters = new TransformParameters(
+                 RectangleF.Empty,
+                 _bitmap.Size,
+                 ScalingPolicy.Stretch,
+                 PixelFormats.Bgra32,
+                 ScalingQuality.FastBilinear);
+
+            _imageRectangle = new Rectangle(0, 0, _bitmap.Width, _bitmap.Height);
+
+            _imageBufferStride = width * 4;
+            _imageBufferSize = width * height * 4;
+            _imageBuffer = new byte[_imageBufferSize];
+
+            return _bitmap;
         }
 
-        public void UpdateFrameSize(int width, int height)
+        private static Bitmap ResizeBitmap(Bitmap bitmap, int width, int height)
         {
-            _pictureSize = new Size(width, height);
+            var resizedBitmap = new Bitmap(width, height);
+            using (var graphic = Graphics.FromImage(resizedBitmap))
+            {
+                graphic.DrawImage(bitmap, 0, 0, width, height);
+            }
+            return resizedBitmap;
         }
 
-        private static byte[] TransformFrame(IDecodedVideoFrame decodedFrame, Size pictureSize)
+        private static void TransformFrame(IDecodedVideoFrame decodedFrame, byte[] buffer, int bufferLength, int bufferStride, TransformParameters transformParameters)
         {
-            var transformParameters = new TransformParameters(
-              RectangleF.Empty,
-              pictureSize,
-              ScalingPolicy.Stretch, PixelFormats.Bgra32, ScalingQuality.FastBilinear);
-
-            var pictureArraySize = pictureSize.Width * pictureSize.Height * 4;
-            var unmanagedPointer = Marshal.AllocHGlobal(pictureArraySize);
-
-            decodedFrame.TransformTo(unmanagedPointer, pictureSize.Width * 4, transformParameters);
-            var managedArray = new byte[pictureArraySize];
-            Marshal.Copy(unmanagedPointer, managedArray, 0, pictureArraySize);
+            var unmanagedPointer = Marshal.AllocHGlobal(bufferLength);
+            decodedFrame.TransformTo(unmanagedPointer, bufferStride, transformParameters);
+            Marshal.Copy(unmanagedPointer, buffer, 0, bufferLength);
             Marshal.FreeHGlobal(unmanagedPointer);
-            return managedArray;
         }
 
-        private static Bitmap CopyDataToBitmap(byte[] data, Size pictureSize)
+        private static void CopyDataToBitmap(byte[] data, Bitmap bitmap, Rectangle rectangle)
         {
-            var bmp = new Bitmap(pictureSize.Width, pictureSize.Height, PixelFormat.Format32bppArgb);
-
-            var bmpData = bmp.LockBits(
-              new Rectangle(0, 0, bmp.Width, bmp.Height),
-              ImageLockMode.WriteOnly, bmp.PixelFormat);
-
+            var bmpData = bitmap.LockBits(rectangle, ImageLockMode.WriteOnly, bitmap.PixelFormat);
             Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
-
-            bmp.UnlockBits(bmpData);
-
-            return bmp;
+            bitmap.UnlockBits(bmpData);
         }
     }
 }
