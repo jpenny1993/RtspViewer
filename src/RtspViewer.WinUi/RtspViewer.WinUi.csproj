@@ -13,6 +13,9 @@
 		<WindowsPackageType>None</WindowsPackageType>
 	</PropertyGroup>
 	<ItemGroup>
+		<None Remove="Assets\Logos\Github.png" />
+		<None Remove="Assets\Logos\LinkedIn.png" />
+		<None Remove="Assets\Logos\Twitter.png" />
 		<None Remove="Views\AboutPage.xaml" />
 		<None Remove="Views\MainPage.xaml" />
 		<None Remove="Views\SettingsPage.xaml" />

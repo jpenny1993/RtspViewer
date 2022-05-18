@@ -5,23 +5,17 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
       Background="Transparent">
-    <Grid>
+    <StackPanel>
         <TextBlock>
-            <Run Text="This app was written to view live RTSP streams from personal security cameras, and is intended"/>
-            <Run Text="for home use only." FontWeight="SemiBold" />
-            <LineBreak />
-            <LineBreak />
-            <Run Text="Code repository:" TextDecorations="Underline" FontWeight="SemiBold" />
-            <LineBreak />
-            <Hyperlink NavigateUri="https://github.com/jpenny1993/RtspViewer">RtspViewer</Hyperlink>
-            <LineBreak />
-            <LineBreak />
-            <Run Text="Developed by:" TextDecorations="Underline" FontWeight="SemiBold" />
-            <LineBreak />
-            <Hyperlink NavigateUri="https://www.twitter.com/jpenny1993">John Penny</Hyperlink>
-            <LineBreak />
-            <LineBreak />
+            <Run>This app was written to view live RTSP streams from personal security cameras, and is intended</Run>
+            <Run FontWeight="SemiBold">for home use only.</Run>
+        </TextBlock>
+        <TextBlock Margin="0 16 0 0">
             <Run Text="Dependencies &amp; inspiration:" TextDecorations="Underline" FontWeight="SemiBold" />
+            <LineBreak />
+            <Run Text="-"/>
+            <Hyperlink NavigateUri="https://github.com/MatthewKing/DeviceId">DeviceId</Hyperlink>
+            <Run Text="a device identifier library by Matthew King"/>
             <LineBreak />
             <Run Text="-"/>
             <Hyperlink NavigateUri="https://github.com/BogdanovKirill/RtspClientSharp">RtspClientSharp</Hyperlink>
@@ -34,9 +28,30 @@
             <Run Text="-"/>
             <Hyperlink NavigateUri="https://github.com/XamlBrewer/XamlBrewer.WinUI3.MasterDetailSample">XamlBrewer.WinUI3.MasterDetailSample</Hyperlink>
             <Run Text="a WinUI3 sample project, by Diederik Krols"/>
-            <LineBreak />
-            <Run Text="- DeviceId"/>
-            <Run Text="- Newtonsoft.Json"/>
         </TextBlock>
-    </Grid>
+        <TextBlock Margin="0 16 0 0">
+            <Run>If you have any issues please raise them on the github link below, I'll attempt to resolve them as and when I have time.</Run>
+            <LineBreak />
+            <Run>Please respect that I have a full time job and development is my hobby.</Run>
+            <LineBreak />
+            <LineBreak />
+            <Run>Kind regards</Run>
+            <LineBreak />
+            <Run>John</Run>
+        </TextBlock>
+        <StackPanel Margin="0 16 0 0" Orientation="Horizontal">
+            <HyperlinkButton NavigateUri="https://github.com/jpenny1993/RtspViewer"
+                             ToolTipService.ToolTip="Github Repository" >
+                <Image Width="50" Source="/Assets/Logos/Github.png"/>
+            </HyperlinkButton>
+            <HyperlinkButton NavigateUri="https://twitter.com/jpenny1993"
+                              ToolTipService.ToolTip="Twitter Profile" >
+                <Image Width="50" Source="/Assets/Logos/Twitter.png" />
+            </HyperlinkButton>
+            <HyperlinkButton NavigateUri="https://www.linkedin.com/in/jpenny93"
+                              ToolTipService.ToolTip="LinkedIn Profile" >
+                <Image Width="50" Source="/Assets/Logos/LinkedIn.png" />
+            </HyperlinkButton>
+        </StackPanel>
+    </StackPanel>
 </Page>
