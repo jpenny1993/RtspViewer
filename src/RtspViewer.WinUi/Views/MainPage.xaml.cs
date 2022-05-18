@@ -21,9 +21,8 @@ namespace RtspViewer.WinUi.Views
             var totalStreams = settings.Streams.Length;
             int maxVideosPerRow = totalStreams switch
             {
-                > 9 => 5,
                 > 4 => 3,
-                >2 => 2,
+                > 2 => 2,
                 2 => 1,
                 _ => 1
             };

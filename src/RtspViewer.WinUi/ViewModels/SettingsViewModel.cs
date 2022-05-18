@@ -8,7 +8,7 @@ namespace RtspViewer.WinUi.ViewModels
 {
     public partial class SettingsViewModel : ObservableObject
     {
-        private const int MaxAllowedStreams = 10;
+        private const int MaxAllowedStreams = 9;
         private readonly ObservableCollection<StreamViewModel> _items = new ObservableCollection<StreamViewModel>();
 
         [ObservableProperty]
