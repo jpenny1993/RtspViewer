@@ -3,3 +3,6 @@
 packages/*
 **/bin/*
 **/obj/*
+.idea/
+src/libffmpeghelper/x64/
+src/libffmpeghelper/x86/

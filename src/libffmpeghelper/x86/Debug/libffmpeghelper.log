@@ -1,7 +1,0 @@
-﻿  stdafx.cpp
-  audiodecoding.cpp
-  dllmain.cpp
-  videodecoding.cpp
-  Generating Code...
-     Creating library C:\src\RtspViewer\src\libffmpeghelper\x86\Debug\libffmpeghelper.lib and object C:\src\RtspViewer\src\libffmpeghelper\x86\Debug\libffmpeghelper.exp
-  libffmpeghelper.vcxproj -> C:\src\RtspViewer\src\libffmpeghelper\x86\Debug\libffmpeghelper.dll
