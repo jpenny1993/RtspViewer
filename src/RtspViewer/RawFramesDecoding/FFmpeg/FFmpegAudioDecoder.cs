@@ -7,7 +7,7 @@ using RtspViewer.RawFramesDecoding.DecodedFrames;
 
 namespace RtspViewer.RawFramesDecoding.FFmpeg
 {
-    class FFmpegAudioDecoder
+    internal class FFmpegAudioDecoder : IDisposable
     {
         private readonly IntPtr _decoderHandle;
         private readonly FFmpegAudioCodecId _audioCodecId;
@@ -17,6 +17,7 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
         private byte[] _extraData = new byte[0];
         private byte[] _decodedFrameBuffer = new byte[0];
         private bool _disposed;
+        private bool disposedValue;
 
         public int BitsPerCodedSample { get; }
 
@@ -25,11 +26,6 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
             _audioCodecId = audioCodecId;
             BitsPerCodedSample = bitsPerCodedSample;
             _decoderHandle = decoderHandle;
-        }
-
-        ~FFmpegAudioDecoder()
-        {
-            Dispose();
         }
 
         /// <exception cref="DecoderException"></exception>
@@ -150,17 +146,28 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
             return new DecodedAudioFrame(_currentRawFrameTimestamp, new ArraySegment<byte>(_decodedFrameBuffer, 0, dataSize), format);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                // Both audio decoder and resampler contain unmanaged code
+                FFmpegAudioPInvoke.RemoveAudioDecoder(_decoderHandle);
+
+                if (_resamplerHandle != IntPtr.Zero)
+                    FFmpegAudioPInvoke.RemoveAudioResampler(_resamplerHandle);
+
+                disposedValue = true;
+            }
+        }
+
+        ~FFmpegAudioDecoder()
+        {
+            Dispose(disposing: false);
+        }
+
         public void Dispose()
         {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-            FFmpegAudioPInvoke.RemoveAudioDecoder(_decoderHandle);
-
-            if (_resamplerHandle != IntPtr.Zero)
-                FFmpegAudioPInvoke.RemoveAudioResampler(_resamplerHandle);
-
+            Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
     }

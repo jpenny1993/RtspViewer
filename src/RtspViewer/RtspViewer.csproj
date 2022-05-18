@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Configuration\ConnectionType.cs" />
     <Compile Include="Configuration\StreamConfiguration.cs" />
+    <Compile Include="Configuration\StreamScale.cs" />
     <Compile Include="Extensions\CryptographyExtensions.cs" />
     <Compile Include="IFrameTransformer.cs" />
     <Compile Include="IMediaSource.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="RawFramesReceiving\IRawFramesSource.cs" />
     <Compile Include="RawFramesReceiving\RawFrameSource.cs" />
     <Compile Include="RawFramesDecoding\AudioFrameDecoder.cs" />
+    <Compile Include="LockedFrame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

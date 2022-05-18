@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace RtspViewer.RawFramesDecoding.FFmpeg
 {
-    static class FFmpegVideoPInvoke
+    internal static class FFmpegVideoPInvoke
     {
 #if LINUX
         private const string LibraryName = "libffmpeghelper.so";

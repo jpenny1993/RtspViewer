@@ -42,16 +42,16 @@ namespace RtspViewer.Forms.Controls
             _frameTransformer = new FrameTransformer();
             _mediaSource = new MediaSource();
             _mediaSource.StatusChanged += MediaSource_OnStatusChanged;
-            _mediaSource.AudioFrameReceived += MediaSource_OnAudioFrameReceived;
-            _mediaSource.VideoFrameReceived += MediaSource_OnVideoFrameReceived;
+            _mediaSource.AudioFrameDecoded += MediaSource_OnAudioFrameReceived;
+            _mediaSource.VideoFrameDecoded += MediaSource_OnVideoFrameReceived;
         }
 
         ~VideoView() 
         {
             _mediaSource.Stop();
             _mediaSource.StatusChanged -= MediaSource_OnStatusChanged;
-            _mediaSource.AudioFrameReceived -= MediaSource_OnAudioFrameReceived;
-            _mediaSource.VideoFrameReceived -= MediaSource_OnVideoFrameReceived;
+            _mediaSource.AudioFrameDecoded -= MediaSource_OnAudioFrameReceived;
+            _mediaSource.VideoFrameDecoded -= MediaSource_OnVideoFrameReceived;
         }
 
         public void InitialiseStream(StreamConfiguration config)
@@ -81,8 +81,9 @@ namespace RtspViewer.Forms.Controls
             ConnectionStatus = status;
         }
 
-        private void MediaSource_OnAudioFrameReceived(object sender, IDecodedAudioFrame audioFrame)
+        private void MediaSource_OnAudioFrameReceived(object sender, LockedFrame<IDecodedAudioFrame> args)
         {
+            var audioFrame = args.DecodedFrame;
             if (_player == null)
             {
                 _player = new BufferedWaveProvider(
@@ -107,14 +108,17 @@ namespace RtspViewer.Forms.Controls
             {
                 _waveOut.Play();
             }
+
+            args.Release();
         }
 
-        private void MediaSource_OnVideoFrameReceived(object sender, IDecodedVideoFrame videoFrame)
+        private void MediaSource_OnVideoFrameReceived(object sender, LockedFrame<IDecodedVideoFrame> args)
         {
             _dispatcher.Invoke(() =>
             {
                 FramesReceived++;
-                video.Image = _frameTransformer.TransformToBitmap(videoFrame);
+                video.Image = _frameTransformer.TransformToBitmap(args.DecodedFrame);
+                args.Release();
             }, DispatcherPriority.Send);
         }
 

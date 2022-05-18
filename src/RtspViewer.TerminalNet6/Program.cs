@@ -11,7 +11,8 @@ namespace RtspViewer.TerminalNet6
         {
             var config = new StreamConfiguration
             {
-                Address = "rtsp://192.168.1.1/stream1",
+                // CHANGE THESE VALUES TO TEST EXAMPLE CODE
+                Address = "rtsp://127.0.0.1:554/stream1",
                 Username = "admin",
                 Password = "password",
                 Protocol = ConnectionType.TCP,
@@ -19,7 +20,7 @@ namespace RtspViewer.TerminalNet6
 
             IMediaSource _mediaSource = new MediaSource(config);
             _mediaSource.StatusChanged += OnStatusChanged;
-            _mediaSource.VideoFrameReceived += MediaSource_OnVideoFrameReceived;
+            _mediaSource.VideoFrameDecoded += MediaSource_OnVideoFrameReceived;
 
             const string imgOutputDirectory = ".\\IMG";
             if (!Directory.Exists(imgOutputDirectory))
@@ -38,8 +39,9 @@ namespace RtspViewer.TerminalNet6
             Console.WriteLine("ConnectionStatus: {0}", status);
         }
 
-        private static void MediaSource_OnVideoFrameReceived(object? sender, IDecodedVideoFrame decodedFrame)
+        private static void MediaSource_OnVideoFrameReceived(object? sender, LockedFrame<IDecodedVideoFrame> args)
         {
+            var decodedFrame = args.DecodedFrame;
             Console.WriteLine("VideoFrameDecoded: {0:yyyy/MM/dd hh:mm:ss}, {1}x{2}",
                     decodedFrame.Timestamp, decodedFrame.Width, decodedFrame.Height);
 
@@ -50,6 +52,7 @@ namespace RtspViewer.TerminalNet6
             {
                 bmp.Save(fs, ImageFormat.Jpeg);
             }
+            args.Release();
         }
     }
 }

@@ -2,20 +2,22 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
-		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>RtspViewer.WinUi</RootNamespace>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
-		<Platforms>x86;x64;arm64</Platforms>
-		<RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+		<Platforms>x86;x64</Platforms>
+		<RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
 		<PublishProfile>win10-$(Platform).pubxml</PublishProfile>
 		<UseWinUI>true</UseWinUI>
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+		<WindowsPackageType>None</WindowsPackageType>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Views\AboutPage.xaml" />
-		<None Remove="Views\BitmapControl.xaml" />
-		<None Remove="Views\HomePage.xaml" />
+		<None Remove="Views\MainPage.xaml" />
+		<None Remove="Views\SettingsPage.xaml" />
 		<None Remove="Views\VideoControl.xaml" />
+		<None Remove="Views\VideoPage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -32,6 +34,7 @@
 		<PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.3" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.197" />
+		<PackageReference Include="NAudio" Version="2.1.0" />
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
@@ -46,7 +49,21 @@
 		<ProjectReference Include="..\RtspViewer\RtspViewer.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Page Update="Views\BitmapControl.xaml">
+	  <Page Update="Views\VideoPage.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	    <SubType>Designer</SubType>
+	  </Page>
+	  <Page Update="Views\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\MainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Controls\VideoControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
@@ -54,15 +71,5 @@
 		<Page Update="Views\AboutPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
-	</ItemGroup>
-	<ItemGroup>
-		<Page Update="Views\HomePage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-	</ItemGroup>
-	<ItemGroup>
-	  <Page Update="Views\VideoControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
 	</ItemGroup>
 </Project>

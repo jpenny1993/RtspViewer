@@ -3,7 +3,7 @@ using RtspClientSharp.RawFrames;
 
 namespace RtspViewer.RawFramesReceiving
 {
-    public interface IRawFramesSource
+    public interface IRawFramesSource : IDisposable
     {
         EventHandler<RawFrame> FrameReceived { get; set; }
         EventHandler<string> ConnectionStatusChanged { get; set; }

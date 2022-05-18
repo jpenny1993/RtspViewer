@@ -8,14 +8,12 @@ namespace RtspViewer.WinUi.Services
     {
         NavigationViewItem GetCurrentNavigationViewItem();
 
-        List<NavigationViewItem> GetNavigationViewItems();
+        NavigationViewItem GetNavigationViewItem(Type type);
 
-        List<NavigationViewItem> GetNavigationViewItems(Type type);
+        IEnumerable<NavigationViewItem> GetNavigationViewItems();
 
-        List<NavigationViewItem> GetNavigationViewItems(Type type, string title);
+        void SetCurrentNavigationViewItem<TType>() where TType : Page;
 
         void SetCurrentNavigationViewItem(NavigationViewItem item);
-
-        void SetCurrentPage(Type type);
     }
 }

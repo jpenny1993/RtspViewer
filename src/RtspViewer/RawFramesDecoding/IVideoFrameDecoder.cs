@@ -1,9 +1,9 @@
-﻿using RtspClientSharp.RawFrames.Video;
-using RtspViewer.RawFramesDecoding.DecodedFrames;
+﻿using System;
+using RtspClientSharp.RawFrames.Video;
 
 namespace RtspViewer.RawFramesDecoding
 {
-    public interface IVideoFrameDecoder
+    public interface IVideoFrameDecoder : IDisposable
     {
         IDecodedVideoFrame Decode(RawVideoFrame rawVideoFrame);
     }

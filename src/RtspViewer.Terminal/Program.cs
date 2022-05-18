@@ -21,7 +21,7 @@ namespace RtspViewer.Terminal
 
             IMediaSource _mediaSource = new MediaSource(config);
             _mediaSource.StatusChanged += OnStatusChanged;
-            _mediaSource.VideoFrameReceived += MediaSource_OnVideoFrameReceived;
+            _mediaSource.VideoFrameDecoded += MediaSource_OnVideoFrameReceived;
 
             if (!Directory.Exists(".\\IMG"))
             {
@@ -39,8 +39,9 @@ namespace RtspViewer.Terminal
             Console.WriteLine("ConnectionStatus: {0}", status);
         }
 
-        private static void MediaSource_OnVideoFrameReceived(object sender, IDecodedVideoFrame decodedFrame)
+        private static void MediaSource_OnVideoFrameReceived(object sender, LockedFrame<IDecodedVideoFrame> args)
         {
+            var decodedFrame = args.DecodedFrame;
             Console.WriteLine("VideoFrameDecoded: {0:yyyy/MM/dd hh:mm:ss}, {1}x{2}",
                     decodedFrame.Timestamp, decodedFrame.Width, decodedFrame.Height);
 
@@ -51,6 +52,7 @@ namespace RtspViewer.Terminal
             {
                 bmp.Save(fs, ImageFormat.Jpeg);
             }
+            args.Release();
         }
     }
 }

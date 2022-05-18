@@ -14,8 +14,8 @@ namespace RtspViewer.RawFramesReceiving
     {
         private static readonly TimeSpan RetryDelay = TimeSpan.FromSeconds(5);
         private readonly ConnectionParameters _connectionParameters;
-        private Task _workTask = Task.CompletedTask;
         private CancellationTokenSource _cancellationTokenSource;
+        private bool disposedValue;
 
         public EventHandler<RawFrame> FrameReceived { get; set; }
         public EventHandler<string> ConnectionStatusChanged { get; set; }
@@ -38,15 +38,12 @@ namespace RtspViewer.RawFramesReceiving
 
             CancellationToken token = _cancellationTokenSource.Token;
 
-            _workTask = _workTask.ContinueWith(async p =>
-            {
-                await ReceiveAsync(token);
-            }, token);
+            Task.Run(async () => await ReceiveAsync(token));
         }
 
         public void Stop()
         {
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource?.Cancel();
         }
 
         private async Task ReceiveAsync(CancellationToken token)
@@ -57,7 +54,7 @@ namespace RtspViewer.RawFramesReceiving
                 {
                     rtspClient.FrameReceived += RtspClientOnFrameReceived;
 
-                    while (true)
+                    while (!token.IsCancellationRequested)
                     {
                         OnStatusChanged("Connecting");
 
@@ -69,7 +66,7 @@ namespace RtspViewer.RawFramesReceiving
                         {
                             OnStatusChanged("Invalid login and/or password");
                             await Task.Delay(RetryDelay, token);
-                            continue;
+                            return;
                         }
                         catch (RtspClientException e)
                         {
@@ -105,6 +102,26 @@ namespace RtspViewer.RawFramesReceiving
         private void OnStatusChanged(string status)
         {
             ConnectionStatusChanged?.Invoke(this, status);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Stop();
+                    _cancellationTokenSource = null;
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

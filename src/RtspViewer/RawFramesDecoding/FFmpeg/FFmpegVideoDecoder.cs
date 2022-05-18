@@ -6,7 +6,7 @@ using RtspViewer.RawFramesDecoding.DecodedFrames;
 
 namespace RtspViewer.RawFramesDecoding.FFmpeg
 {
-    class FFmpegVideoDecoder
+    internal class FFmpegVideoDecoder : IDisposable
     {
         private readonly IntPtr _decoderHandle;
         private readonly FFmpegVideoCodecId _videoCodecId;
@@ -18,17 +18,12 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
             new Dictionary<TransformParameters, FFmpegDecodedVideoScaler>();
 
         private byte[] _extraData = new byte[0];
-        private bool _disposed;
+        private bool _disposedValue;
 
         private FFmpegVideoDecoder(FFmpegVideoCodecId videoCodecId, IntPtr decoderHandle)
         {
             _videoCodecId = videoCodecId;
             _decoderHandle = decoderHandle;
-        }
-
-        ~FFmpegVideoDecoder()
-        {
-            Dispose();
         }
 
         public static FFmpegVideoDecoder CreateDecoder(FFmpegVideoCodecId videoCodecId)
@@ -96,17 +91,6 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
             }
         }
 
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-            FFmpegVideoPInvoke.RemoveVideoDecoder(_decoderHandle);
-            DropAllVideoScalers();
-            GC.SuppressFinalize(this);
-        }
-
         private void DropAllVideoScalers()
         {
             foreach (var scaler in _scalersMap.Values)
@@ -127,6 +111,28 @@ namespace RtspViewer.RawFramesDecoding.FFmpeg
 
             if (resultCode != 0)
                 throw new DecoderException($"An error occurred while converting decoding video frame, {_videoCodecId} codec, code: {resultCode}");
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                // Both video scalers and video decoder contain unmanaged code
+                DropAllVideoScalers();
+                FFmpegVideoPInvoke.RemoveVideoDecoder(_decoderHandle);
+                _disposedValue = true;
+            }
+        }
+
+        ~FFmpegVideoDecoder()
+        {
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

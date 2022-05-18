@@ -1,12 +1,19 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using RtspViewer.RawFramesDecoding;
 
 namespace RtspViewer
 {
+    /// <summary>
+    /// Converts an <see cref="IDecodedVideoFrame"/> to a <see cref="Bitmap"/>.
+    /// The same image instance is used for each conversion to save on garbage collection of heap memory.
+    /// Transformations should always be done on the UI thread due to it locking the bitmap during render.
+    /// </summary>
     public sealed class FrameTransformer : IFrameTransformer
     {
+        private bool _disposedValue;
         private TransformParameters _transformParameters;
         private Rectangle _imageRectangle;
         private Bitmap _bitmap;
@@ -25,6 +32,7 @@ namespace RtspViewer
 
         public Bitmap TransformToBitmap(IDecodedVideoFrame decodedFrame)
         {
+            if (_disposedValue) return null;
             TransformFrame(decodedFrame, _imageBuffer, _imageBufferSize, _imageBufferStride, _transformParameters);
             CopyDataToBitmap(_imageBuffer, _bitmap, _imageRectangle);
             return _bitmap;
@@ -75,6 +83,27 @@ namespace RtspViewer
             var bmpData = bitmap.LockBits(rectangle, ImageLockMode.WriteOnly, bitmap.PixelFormat);
             Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
             bitmap.UnlockBits(bmpData);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _transformParameters = null;
+                    _bitmap = null;
+                    _imageBuffer = null;
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

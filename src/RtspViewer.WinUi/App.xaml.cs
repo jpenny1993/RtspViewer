@@ -1,34 +1,50 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System;
+using Microsoft.UI.Xaml;
+using RtspViewer.WinUi.Models;
 using RtspViewer.WinUi.Services;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Windows.Storage;
 
 namespace RtspViewer.WinUi
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
     public partial class App : Application
     {
+        private readonly ISettingsService _settingsService;
+        private MainWindow _main;
+
+        public SettingsModel Settings { get; private set; }
+
+        public INavigation Navigation => _main;
+
+        public IThematic Theme => _main;
+
         public App()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            Settings = new SettingsModel();
+
+            try
+            {
+                var packagedSettingsProvider = ApplicationData.Current.LocalSettings;
+                _settingsService = new PackagedSettingsService(packagedSettingsProvider);
+            }
+            catch (InvalidOperationException)
+            {
+                _settingsService = new UnpackagedSettingsService();
+            }
         }
 
-        public INavigation Navigation => main;
+        public void SaveSettings(SettingsModel settings)
+        {
+            Settings = settings;
+            _settingsService.SaveSettings(Settings);
+            _main.RebuildCameraMenuItems(Settings);
+        }
 
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            main = new MainWindow();
-            main.Activate();
+            Settings = _settingsService.LoadSettings();
+            _main = new MainWindow(Settings);
+            _main.Activate();
         }
-
-        private MainWindow main;
     }
 }

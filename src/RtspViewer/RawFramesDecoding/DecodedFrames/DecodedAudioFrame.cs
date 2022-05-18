@@ -2,7 +2,7 @@
 
 namespace RtspViewer.RawFramesDecoding.DecodedFrames
 {
-    public class DecodedAudioFrame : IDecodedAudioFrame
+    public sealed class DecodedAudioFrame : IDecodedAudioFrame
     {
         public DateTime Timestamp { get; }
         public ArraySegment<byte> DecodedBytes { get; }

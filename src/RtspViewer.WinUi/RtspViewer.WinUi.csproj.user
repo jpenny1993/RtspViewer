@@ -4,7 +4,7 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>RtspViewer.WinUi (Package)</ActiveDebugProfile>
+    <ActiveDebugProfile>RtspViewer.WinUi (Unpackaged)</ActiveDebugProfile>
   </PropertyGroup>
   <ItemGroup>
     <None Update="App.xaml">
@@ -16,10 +16,16 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
-    <Page Update="Views\BitmapControl.xaml">
+    <Page Update="Views\VideoPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\VideoControl.xaml">
+    <Page Update="Views\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\VideoControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

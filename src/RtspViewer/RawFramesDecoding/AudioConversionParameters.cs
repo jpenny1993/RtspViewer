@@ -1,6 +1,6 @@
 ﻿namespace RtspViewer.RawFramesDecoding
 {
-    public class AudioConversionParameters
+    public sealed class AudioConversionParameters
     {
         public int OutSampleRate { get; set; }
         public int OutBitsPerSample { get; set; }

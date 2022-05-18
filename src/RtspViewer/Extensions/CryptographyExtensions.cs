@@ -28,9 +28,7 @@ namespace RtspViewer.Extensions
         public static string DecryptText(this SymmetricAlgorithm algorithm, string encryptedText)
         {
             ICryptoTransform decryptor = algorithm.CreateDecryptor(algorithm.Key, algorithm.IV);
-
             var encryptedBytes = Convert.FromBase64String(encryptedText);
-
             using (var ms = new MemoryStream(encryptedBytes))
             using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
             using (var reader = new StreamReader(cs))
@@ -43,6 +41,7 @@ namespace RtspViewer.Extensions
         {
             // Use hardware + user data to determine Key & IV
             // That way we can reload the config without storing the keys
+            // Unfortunately we're pretty limited on what that can be in WinUI3
             algorithm.Key = GetMachineInfo(algorithm.KeySize / 8); // default is 258 bits / 32 bytes
             algorithm.IV = GetUserInfo(algorithm.BlockSize / 8);   // default is 128 bits / 16 bytes
             return algorithm;
@@ -51,9 +50,8 @@ namespace RtspViewer.Extensions
         private static byte[] GetMachineInfo(int keySize)
         {
             var deviceInfoBytes = new DeviceIdBuilder()
-                .AddMacAddress()
-                .AddProcessorId()
-                .AddMotherboardSerialNumber()
+                .AddOSInstallationID()
+                .AddOSVersion()
                 .ToBytes();
 
             var keyBytes = new byte[keySize];
@@ -64,7 +62,6 @@ namespace RtspViewer.Extensions
         private static byte[] GetUserInfo(int keySize)
         {
             var userInfoBytes = new DeviceIdBuilder()
-                .AddOSInstallationID()
                 .AddUserName()
                 .ToBytes();
 

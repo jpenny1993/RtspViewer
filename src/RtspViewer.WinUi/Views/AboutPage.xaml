@@ -3,27 +3,40 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:views="using:RtspViewer.WinUi.Views"
       mc:Ignorable="d"
       Background="Transparent">
-
     <Grid>
         <TextBlock>
-            <Run>This WinUI 3 Desktop app expores building a Master-Detail screen</Run>
+            <Run Text="This app was written to view live RTSP streams from personal security cameras, and is intended"/>
+            <Run Text="for home use only." FontWeight="SemiBold" />
             <LineBreak />
-            <Run>* with a filterable list on the left,</Run>
             <LineBreak />
-            <Run>* a detail panel on the right,</Run>
+            <Run Text="Code repository:" TextDecorations="Underline" FontWeight="SemiBold" />
             <LineBreak />
-            <Run>* command buttons on both sides, and</Run>
+            <Hyperlink NavigateUri="https://github.com/jpenny1993/RtspViewer">RtspViewer</Hyperlink>
             <LineBreak />
-            <Run>* an Insert/Edit dialog,</Run>
-            <LineBreak />            
-            <Run>* using Microsoft MVVM Toolkit.</Run>
-            <LineBreak /><LineBreak />    
-            <LineBreak /><LineBreak />  
-            <Run Text="Text and images from " /><Hyperlink NavigateUri="https://starwars.fandom.com/">Wookieepedia.</Hyperlink>
+            <LineBreak />
+            <Run Text="Developed by:" TextDecorations="Underline" FontWeight="SemiBold" />
+            <LineBreak />
+            <Hyperlink NavigateUri="https://www.twitter.com/jpenny1993">John Penny</Hyperlink>
+            <LineBreak />
+            <LineBreak />
+            <Run Text="Dependencies &amp; inspiration:" TextDecorations="Underline" FontWeight="SemiBold" />
+            <LineBreak />
+            <Run Text="-"/>
+            <Hyperlink NavigateUri="https://github.com/BogdanovKirill/RtspClientSharp">RtspClientSharp</Hyperlink>
+            <Run Text="an RTSP client library, by BogdanovKirill"/>
+            <LineBreak />
+            <Run Text="-"/>
+            <Hyperlink NavigateUri="https://github.com/i-TechSoftware/RtspClientSharpCore">RtspClientSharpCore</Hyperlink>
+            <Run Text="which includes a cross platform FFMPEG wrapper, by Alex Meshkov"/>
+            <LineBreak />
+            <Run Text="-"/>
+            <Hyperlink NavigateUri="https://github.com/XamlBrewer/XamlBrewer.WinUI3.MasterDetailSample">XamlBrewer.WinUI3.MasterDetailSample</Hyperlink>
+            <Run Text="a WinUI3 sample project, by Diederik Krols"/>
+            <LineBreak />
+            <Run Text="- DeviceId"/>
+            <Run Text="- Newtonsoft.Json"/>
         </TextBlock>
-        <views:BitmapControl></views:BitmapControl>
     </Grid>
 </Page>

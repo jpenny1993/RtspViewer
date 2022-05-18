@@ -8,10 +8,11 @@ namespace RtspViewer.RawFramesDecoding
 {
     public sealed class AudioFrameDecoder : IAudioFrameDecoder
     {
-        private static readonly Dictionary<FFmpegAudioCodecId, FFmpegAudioDecoder> AudioDecodersMap =
+        private readonly Dictionary<FFmpegAudioCodecId, FFmpegAudioDecoder> AudioDecodersMap =
             new Dictionary<FFmpegAudioCodecId, FFmpegAudioDecoder>();
 
         private readonly AudioConversionParameters _conversionParameters;
+        private bool disposedValue;
 
         public AudioFrameDecoder()
         {
@@ -29,16 +30,9 @@ namespace RtspViewer.RawFramesDecoding
         public IDecodedAudioFrame Decode(RawAudioFrame rawAudioFrame)
         {
             var decoder = GetDecoderForFrame(rawAudioFrame);
-
             if (!decoder.TryDecode(rawAudioFrame))
             {
-                return new DecodedAudioFrame(
-                    rawAudioFrame.Timestamp,
-                    new ArraySegment<byte>(),
-                    new AudioFrameFormat(
-                        _conversionParameters.OutSampleRate,
-                        _conversionParameters.OutBitsPerSample,
-                        _conversionParameters.OutChannels));
+                return null;
             }
 
             return decoder.GetDecodedFrame(_conversionParameters);
@@ -73,6 +67,36 @@ namespace RtspViewer.RawFramesDecoding
                 return FFmpegAudioCodecId.G726;
 
             throw new ArgumentOutOfRangeException(nameof(audioFrame));
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                // Decoders contain unmanaged objects and must be disposed first
+                foreach (var decoder in AudioDecodersMap.Values)
+                {
+                    decoder.Dispose();
+                }
+
+                if (disposing)
+                {
+                    AudioDecodersMap.Clear();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~AudioFrameDecoder()
+        {
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

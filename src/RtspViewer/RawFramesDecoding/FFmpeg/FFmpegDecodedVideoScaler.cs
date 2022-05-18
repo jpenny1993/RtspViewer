@@ -2,7 +2,7 @@
 
 namespace RtspViewer.RawFramesDecoding.FFmpeg
 {
-    class FFmpegDecodedVideoScaler
+    internal class FFmpegDecodedVideoScaler
     {
         private const double MaxAspectRatioError = 0.1;
         private bool _disposed;

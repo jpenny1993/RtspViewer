@@ -2,7 +2,7 @@
 
 namespace RtspViewer.RawFramesDecoding
 {
-    public class TransformParameters
+    public sealed class TransformParameters
     {
         public RectangleF RegionOfInterest { get; }
 

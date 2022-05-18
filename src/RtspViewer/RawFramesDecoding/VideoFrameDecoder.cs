@@ -7,8 +7,9 @@ namespace RtspViewer.RawFramesDecoding
 {
     public sealed class VideoFrameDecoder : IVideoFrameDecoder
     {
-        private static readonly Dictionary<FFmpegVideoCodecId, FFmpegVideoDecoder> VideoDecodersMap =
+        private readonly Dictionary<FFmpegVideoCodecId, FFmpegVideoDecoder> VideoDecodersMap =
           new Dictionary<FFmpegVideoCodecId, FFmpegVideoDecoder>();
+        private bool disposedValue;
 
         public IDecodedVideoFrame Decode(RawVideoFrame rawVideoFrame)
         {
@@ -36,6 +37,36 @@ namespace RtspViewer.RawFramesDecoding
                 return FFmpegVideoCodecId.H264;
 
             throw new ArgumentOutOfRangeException(nameof(videoFrame));
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                // Decoders contain unmanaged objects and must be disposed first
+                foreach (var decoder in VideoDecodersMap.Values)
+                {
+                    decoder.Dispose();
+                }
+
+                if (disposing)
+                {
+                    VideoDecodersMap.Clear();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~VideoFrameDecoder()
+        {
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

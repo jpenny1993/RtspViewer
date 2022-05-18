@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
-using Newtonsoft.Json;
+using System.Text;
+using System.Xml.Serialization;
 using RtspViewer.Extensions;
 
 namespace RtspViewer.Configuration
@@ -12,25 +13,54 @@ namespace RtspViewer.Configuration
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public static void Save(string filePath, StreamConfiguration config)
+        public static TData Decrypt<TData>(string encryptedText)
         {
+            try
+            {
+                var encryptor = new AesManaged().SetMachineSecret();
+                var xml = encryptor.DecryptText(encryptedText);
+                var serialiser = new XmlSerializer(typeof(TData));
+                var reader = new StringReader(xml);
+                var data = (TData)serialiser.Deserialize(reader);
+                return data;
+            }
+            catch
+            {
+                return default(TData);
+            }
+        }
 
-            using (var fs = new FileStream(filePath, FileMode.OpenOrCreate))
+        public static string Encrypt<TData>(TData config)
+        {
+            var serialiser = new XmlSerializer(typeof(TData));
+            var writer = new StringWriter();
+            serialiser.Serialize(writer, config);
+            var xml = writer.ToString();
+            var encryptor = new AesManaged().SetMachineSecret();
+            return encryptor.EncryptText(xml);
+        }
+
+        public static void Save<TData>(string filePath, TData config)
+        {
+            var directory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            using (var fs = new FileStream(filePath, FileMode.Create))
             using (var sw = new StreamWriter(fs))
             {
-                var json = JsonConvert.SerializeObject(config);
-                var encryptor = new AesManaged().SetMachineSecret();
-                var encryptedText = encryptor.EncryptText(json);
-
+                var encryptedText = Encrypt(config);
                 sw.Write(encryptedText);
             }
         }
 
-        public static bool TryLoad(string filePath, out StreamConfiguration config)
+        public static bool TryLoad<TData>(string filePath, out TData config)
         {
             if (!File.Exists(filePath))
             {
-                config = null;
+                config = default(TData);
                 return false;
             }
 
@@ -40,18 +70,15 @@ namespace RtspViewer.Configuration
                 using (var sr = new StreamReader(fs))
                 {
                     var encryptedText = sr.ReadToEnd();
-                    var encryptor = new AesManaged().SetMachineSecret();
-                    var json = encryptor.DecryptText(encryptedText);
-                    config = JsonConvert.DeserializeObject<StreamConfiguration>(json);
+                    config = Decrypt<TData>(encryptedText);
                 }
             }
             catch
             {
-                config = null;
-                return false;
+                config = default(TData);
             }
 
-            return true;
+            return config != null;
         }
     }
 }

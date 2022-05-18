@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace RtspViewer.RawFramesDecoding.FFmpeg
 {
-    class FFmpegAudioPInvoke
+    internal class FFmpegAudioPInvoke
     {
         private const string LibraryName = "libffmpeghelper.dll";
 
